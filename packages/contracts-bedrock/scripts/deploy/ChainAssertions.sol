@@ -7,8 +7,6 @@ import { console2 as console } from "forge-std/console2.sol";
 
 // Scripts
 import { DeployConfig } from "scripts/deploy/DeployConfig.s.sol";
-import { Deployer } from "scripts/deploy/Deployer.sol";
-import { ISystemConfigV0 } from "scripts/interfaces/ISystemConfigV0.sol";
 import { ISystemConfigInterop } from "src/L1/interfaces/ISystemConfigInterop.sol";
 
 // Libraries
@@ -584,6 +582,9 @@ library ChainAssertions {
     function assertInitializedSlotIsSet(address _contractAddress, uint256 _slot, uint256 _offset) internal view {
         bytes32 slotVal = vm.load(_contractAddress, bytes32(_slot));
         uint8 val = uint8((uint256(slotVal) >> (_offset * 8)) & 0xFF);
-        require(val == uint8(1) || val == uint8(0xff), "Storage value is not 1 or 0xff at the given slot and offset");
+        require(
+            val == uint8(1) || val == uint8(0xff),
+            "ChainAssertions: storage value is not 1 or 0xff at the given slot and offset"
+        );
     }
 }
